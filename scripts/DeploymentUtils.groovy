@@ -14,6 +14,7 @@ APPLICATION_NAME = 'core-server'
  * @return environment name
  */
 
+@Whitelisted
 String getEnvironmentByCNAME(String cname) {
     final String responseStr = sh (
             script: "aws elasticbeanstalk describe-environments --application-name ${APPLICATION_NAME}",
@@ -37,6 +38,7 @@ String getEnvironmentByCNAME(String cname) {
  * Runs periodical checks against specified environment until its deployment status is green
  * @param envName environment name
  */
+@Whitelisted
 void waitForGreen(String envName) {
     final int secToSleep = 10
 
