@@ -17,7 +17,7 @@ APPLICATION_NAME = 'core-server'
  */
 
 @Whitelisted
-String getEnvironmentByCNAME(String cname) {
+static String getEnvironmentByCNAME(String cname) {
     final String responseStr = sh (
             script: "aws elasticbeanstalk describe-environments --application-name ${APPLICATION_NAME}",
             returnStdout: true).trim()
@@ -41,7 +41,7 @@ String getEnvironmentByCNAME(String cname) {
  * @param envName environment name
  */
 @Whitelisted
-void waitForGreen(String envName) {
+static void waitForGreen(String envName) {
     final int secToSleep = 10
 
     final timeoutMillis = System.currentTimeMillis() + (120 * 1000)
@@ -83,7 +83,7 @@ void waitForGreen(String envName) {
  * @return
  */
 @NonCPS
-def parse(String json) {
+static def parse(String json) {
     new JsonSlurperClassic().parseText(json)
 }
 
