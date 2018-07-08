@@ -51,11 +51,14 @@ void waitForGreen(String envName) {
 
     while (true) {
         final String responseStr = sh (
-                script: 'aws elasticbeanstalk describe-environments --application-name ${APPLICATION_NAME}',
+                script: 'ls -lah',
                 returnStdout: true).trim()
         
-        println responseStr
+        println "_____________________________________${responseStr}_____________________"
+        
+        break;
 
+/*
         def response = jsonSlurper.parseText(responseStr)
 
         Optional<String> envHealth = ((List<Map<String, Object>>)((Map) response).get("Environments")).stream()
@@ -77,6 +80,7 @@ void waitForGreen(String envName) {
         assert System.currentTimeMillis() < timeoutMillis :  "Application launch timeout"
 
         sleep(secToSleep * 1000)
+*/
     }
 }
 
