@@ -1,5 +1,4 @@
-import groovy.json.JsonSlurper
-
+import groovy.json.JsonSlurperClassic
 /**
  * @author: Askhat Salikhov
  */
@@ -16,7 +15,7 @@ APPLICATION_NAME = 'core-server'
  */
 
 String getEnvironmentByCNAME(String cname) {
-    final def jsonSlurper = new JsonSlurper()
+    final def jsonSlurper = new JsonSlurperClassic()
 
     final String responseStr = sh (
             script: "aws elasticbeanstalk describe-environments --application-name ${APPLICATION_NAME}",
@@ -43,7 +42,7 @@ String getEnvironmentByCNAME(String cname) {
 
 
 void waitForGreen(String envName) {
-    def jsonSlurper = new JsonSlurper()
+    def jsonSlurper = new JsonSlurperClassic()
 
     final int secToSleep = 10
 
