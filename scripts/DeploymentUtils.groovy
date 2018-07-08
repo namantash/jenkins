@@ -39,8 +39,6 @@ String getEnvironmentByCNAME(String cname) {
  * Runs periodical checks against specified environment until its deployment status is green
  * @param envName environment name
  */
-
-
 void waitForGreen(String envName) {
     final int secToSleep = 10
 
@@ -51,8 +49,6 @@ void waitForGreen(String envName) {
                 script: "aws elasticbeanstalk describe-environments --application-name ${APPLICATION_NAME}",
                 returnStdout: true).trim()
 
-        println "_____________________________________${responseStr}_____________________"
-        
         def response = parse(responseStr)
 
         Optional<String> envHealth = ((List<Map<String, Object>>)((Map) response).get("Environments")).stream()
