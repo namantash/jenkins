@@ -1,11 +1,13 @@
 #!/usr/bin/env groovy
 
 node {
-    sh "ls -a > temp"
+    def awsResult = sh (
+        script: 'ls -lah',
+        returnStdout: true).trim()
 
     def deployUtils = load("${workspace}@script/scripts/DeploymentUtils.groovy")
 
-    deployUtils.waitForGreen("app-${env.BUILD_NUMBER}")
+    deployUtils.waitForGreen(awsResult)
 
-    println deployUtils.getEnvironmentByCNAME("hello world")
+    println deployUtils.getEnvironmentByCNAME(awsResult)
 }
