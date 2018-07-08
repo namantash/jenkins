@@ -58,10 +58,10 @@ void waitForGreen(String envName) {
 
         if (envHealth.isPresent()) {
             if (envHealth.get().equalsIgnoreCase("green")) {
-                println "Environment is up and running"
+                //println "Environment is up and running"
                 return;
             } else {
-                println "Current health color ${envHealth.get()} -- will check back in ${secToSleep} ..."
+                //println("Current health color ${envHealth.get()} -- will check back in ${secToSleep} ...")
             }
         } else {
             assert false : "Environment not found"
