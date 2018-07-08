@@ -50,7 +50,7 @@ void waitForGreen(String envName) {
     final timeoutMillis = System.currentTimeMillis() + (120 * 1000)
 
     while (true) {
-        final String responseStr = sh("aws elasticbeanstalk describe-environments --application-name ${APPLICATION_NAME}", returnStdout: true)
+        final String responseStr = sh("aws elasticbeanstalk describe-environments --application-name ${APPLICATION_NAME}", true)
 
         def response = jsonSlurper.parseText(responseStr)
 
