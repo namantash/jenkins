@@ -4,6 +4,13 @@
 
 
 String getEnvironmentByCNAME(String cname) {
+    List<String> temp = new ArrayList();
+    temp.add("test");
+    temp.add("test1");
+
+    temp.stream().filter({it.equalsIgnoreCase("test")}).count();
+
+
     println "getEnvironmentByCNAME: ${cname}"
     return cname
 }
