@@ -22,6 +22,7 @@ String getEnvironmentByCNAME(String cname) {
 
     def response = jsonSlurper.parseText(responseStr)
 
+/*
     Optional<String> envName = ((List<Map<String, Object>>)((Map) response).get("Environments")).stream()
             .filter({it.get("CNAME").toString().startsWith(cname + ".")})
             .map({it -> it.get("EnvironmentName").toString()})
@@ -32,6 +33,8 @@ String getEnvironmentByCNAME(String cname) {
     } else {
         //assert false : "Environment not found"
     }
+*/
+    return null
 }
 
 /**
@@ -51,6 +54,7 @@ void waitForGreen(String envName) {
 
         def response = jsonSlurper.parseText(responseStr)
 
+/*
         Optional<String> envHealth = ((List<Map<String, Object>>)((Map) response).get("Environments")).stream()
                 .filter({it.get("EnvironmentName").toString().equalsIgnoreCase(envName)})
                 .map({it -> it.get("Health").toString()})
@@ -66,10 +70,14 @@ void waitForGreen(String envName) {
         } else {
             //assert false : "Environment not found"
         }
+*/
 
         //assert System.currentTimeMillis() < timeoutMillis :  "Application launch timeout"
 
         sleep(secToSleep * 1000)
+
+        break;
+        
     }
 }
 
