@@ -3,5 +3,5 @@
 node {
     def deployUtils = load("${workspace}@script/scripts/DeploymentUtils.groovy")
 
-    deployUtils.waitForGreen("sdfsfsdf")
+    deployUtils.getEnvironmentByCNAME("sdfsfsdf")
 }
