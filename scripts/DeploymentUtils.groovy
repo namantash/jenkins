@@ -53,6 +53,8 @@ void waitForGreen(String envName) {
         final String responseStr = sh (
                 script: "aws elasticbeanstalk describe-environments --application-name ${APPLICATION_NAME}",
                 returnStdout: true).trim()
+        
+        print responseStr
 
         def response = jsonSlurper.parseText(responseStr)
 
