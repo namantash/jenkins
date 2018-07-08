@@ -42,7 +42,7 @@ String getEnvironmentByCNAME(String cname) {
 
 
 void waitForGreen(String envName) {
-    def jsonSlurper = new JsonSlurperClassic()
+    JsonSlurperClassic jsonSlurper = new JsonSlurperClassic()
 
     final int secToSleep = 10
 
