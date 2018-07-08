@@ -30,7 +30,7 @@ String getEnvironmentByCNAME(String cname) {
     if (envName.isPresent()) {
         return envName.get();
     } else {
-        assert false : "Environment not found"
+        //assert false : "Environment not found"
     }
 }
 
@@ -64,10 +64,10 @@ void waitForGreen(String envName) {
                 //println("Current health color ${envHealth.get()} -- will check back in ${secToSleep} ...")
             }
         } else {
-            assert false : "Environment not found"
+            //assert false : "Environment not found"
         }
 
-        assert System.currentTimeMillis() < timeoutMillis :  "Application launch timeout"
+        //assert System.currentTimeMillis() < timeoutMillis :  "Application launch timeout"
 
         sleep(secToSleep * 1000)
     }
