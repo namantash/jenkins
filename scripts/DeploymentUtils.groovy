@@ -16,9 +16,11 @@ APPLICATION_NAME = 'core-server'
  */
 
 String getEnvironmentByCNAME(String cname) {
+    WsdlProject wsdlProject = new Wsdl
+
     final def jsonSlurper = new JsonSlurper()
 
-    final String responseStr = "aws elasticbeanstalk describe-environments --application-name ${APPLICATION_NAME}".execute().text
+    final String responseStr = sh("aws elasticbeanstalk describe-environments --application-name ${APPLICATION_NAME}", returnStdout: true)
 
     def response = jsonSlurper.parseText(responseStr)
 
@@ -50,7 +52,7 @@ void waitForGreen(String envName) {
     final timeoutMillis = System.currentTimeMillis() + (120 * 1000)
 
     while (true) {
-        final String responseStr = "aws elasticbeanstalk describe-environments --application-name ${APPLICATION_NAME}".execute().text
+        final String responseStr = sh("aws elasticbeanstalk describe-environments --application-name ${APPLICATION_NAME}", returnStdout: true)
 
         def response = jsonSlurper.parseText(responseStr)
 
