@@ -1,4 +1,6 @@
 import groovy.json.JsonSlurperClassic
+import org.jenkinsci.plugins.scriptsecurity.sandbox.whitelists.Whitelisted
+
 /**
  * @author: Askhat Salikhov
  */
