@@ -16,8 +16,6 @@ APPLICATION_NAME = 'core-server'
  */
 
 String getEnvironmentByCNAME(String cname) {
-    WsdlProject wsdlProject = new Wsdl
-
     final def jsonSlurper = new JsonSlurper()
 
     final String responseStr = sh("aws elasticbeanstalk describe-environments --application-name ${APPLICATION_NAME}", returnStdout: true)
