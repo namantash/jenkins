@@ -15,17 +15,12 @@ APPLICATION_NAME = 'core-server'
  * @return environment name
  */
 
-void test() {
-    def awsResult = sh (
-            script: 'ls -lah',
-            returnStdout: true).trim()
-    print awsResult;
-}
-
 String getEnvironmentByCNAME(String cname) {
     final def jsonSlurper = new JsonSlurper()
 
-    final String responseStr = "aws elasticbeanstalk describe-environments --application-name ${APPLICATION_NAME}".execute().text
+    final String responseStr = sh (
+            script: "aws elasticbeanstalk describe-environments --application-name ${APPLICATION_NAME}",
+            returnStdout: true).trim()
 
     def response = jsonSlurper.parseText(responseStr)
 
@@ -36,24 +31,6 @@ String getEnvironmentByCNAME(String cname) {
 
     if (envName.isPresent()) {
         return envName.get();
-    } else {
-        assert false : "Environment not found"
-    }
-}
-
-
-boolean isEnvStatusGreen(String awsResponse, String envName) {
-    final def jsonSlurper = new JsonSlurper()
-
-    def response = jsonSlurper.parseText(awsResponse)
-
-    Optional<String> envHealth = ((List<Map<String, Object>>)((Map) response).get("Environments")).stream()
-            .filter({it.get("EnvironmentName").toString().equalsIgnoreCase(envName)})
-            .map({it -> it.get("Health").toString()})
-            .findAny()
-
-    if (envHealth.isPresent()) {
-        return (envHealth.get().equalsIgnoreCase("green"))
     } else {
         assert false : "Environment not found"
     }
@@ -73,7 +50,9 @@ void waitForGreen(String envName) {
     final timeoutMillis = System.currentTimeMillis() + (120 * 1000)
 
     while (true) {
-        final String responseStr = "aws elasticbeanstalk describe-environments --application-name ${APPLICATION_NAME}".execute().text
+        final String responseStr = sh (
+                script: "aws elasticbeanstalk describe-environments --application-name ${APPLICATION_NAME}",
+                returnStdout: true).trim()
 
         def response = jsonSlurper.parseText(responseStr)
 
@@ -98,9 +77,5 @@ void waitForGreen(String envName) {
         sleep(secToSleep * 1000)
     }
 }
-
-//final String responseStr = "aws elasticbeanstalk describe-environments --application-name ${APPLICATION_NAME}".execute().text
-
-//println "Env status: " + isEnvStatusGreen(responseStr, )
 
 return this
