@@ -17,11 +17,10 @@ APPLICATION_NAME = 'core-server'
 
 String getEnvironmentByCNAME(String cname) {
     final def jsonSlurper = new JsonSlurper()
+    
 
-    final String responseStr = sh("aws elasticbeanstalk describe-environments --application-name ${APPLICATION_NAME}", true)
-
-    def response = jsonSlurper.parseText(responseStr)
-
+    println cname
+    
 /*
     Optional<String> envName = ((List<Map<String, Object>>)((Map) response).get("Environments")).stream()
             .filter({it.get("CNAME").toString().startsWith(cname + ".")})
@@ -45,40 +44,7 @@ String getEnvironmentByCNAME(String cname) {
 void waitForGreen(String envName) {
     final def jsonSlurper = new JsonSlurper()
 
-    final int secToSleep = 10
-
-    final timeoutMillis = System.currentTimeMillis() + (120 * 1000)
-
-    while (true) {
-        final String responseStr = sh("aws elasticbeanstalk describe-environments --application-name ${APPLICATION_NAME}", true)
-
-        def response = jsonSlurper.parseText(responseStr)
-
-/*
-        Optional<String> envHealth = ((List<Map<String, Object>>)((Map) response).get("Environments")).stream()
-                .filter({it.get("EnvironmentName").toString().equalsIgnoreCase(envName)})
-                .map({it -> it.get("Health").toString()})
-                .findAny()
-
-        if (envHealth.isPresent()) {
-            if (envHealth.get().equalsIgnoreCase("green")) {
-                //println "Environment is up and running"
-                return;
-            } else {
-                //println("Current health color ${envHealth.get()} -- will check back in ${secToSleep} ...")
-            }
-        } else {
-            //assert false : "Environment not found"
-        }
-*/
-
-        //assert System.currentTimeMillis() < timeoutMillis :  "Application launch timeout"
-
-        sleep(secToSleep * 1000)
-
-        break;
-        
-    }
+    println envName
 }
 
 return this
