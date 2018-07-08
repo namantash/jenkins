@@ -99,8 +99,8 @@ void waitForGreen(String envName) {
     }
 }
 
-final String responseStr = "aws elasticbeanstalk describe-environments --application-name ${APPLICATION_NAME}".execute().text
+//final String responseStr = "aws elasticbeanstalk describe-environments --application-name ${APPLICATION_NAME}".execute().text
 
-println "Env status: " + isEnvStatusGreen(responseStr, )
+//println "Env status: " + isEnvStatusGreen(responseStr, )
 
 return this
