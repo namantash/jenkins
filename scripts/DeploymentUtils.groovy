@@ -21,7 +21,7 @@ String getEnvironmentByCNAME(String cname) {
             script: "aws elasticbeanstalk describe-environments --application-name ${APPLICATION_NAME}",
             returnStdout: true).trim()
 
-    def response = jsonSlurper.parseText(responseStr)
+    def response = parse(responseStr)
 
     Optional<String> envName = ((List<Map<String, Object>>)((Map) response).get("Environments")).stream()
             .filter({it.get("CNAME").toString().startsWith(cname + ".")})
@@ -42,8 +42,6 @@ String getEnvironmentByCNAME(String cname) {
 
 
 void waitForGreen(String envName) {
-    JsonSlurperClassic jsonSlurper = new JsonSlurperClassic()
-
     final int secToSleep = 10
 
     final timeoutMillis = System.currentTimeMillis() + (120 * 1000)
@@ -55,10 +53,7 @@ void waitForGreen(String envName) {
 
         println "_____________________________________${responseStr}_____________________"
         
-        break;
-
-/*
-        def response = jsonSlurper.parseText(responseStr)
+        def response = parse(responseStr)
 
         Optional<String> envHealth = ((List<Map<String, Object>>)((Map) response).get("Environments")).stream()
                 .filter({it.get("EnvironmentName").toString().equalsIgnoreCase(envName)})
@@ -79,8 +74,12 @@ void waitForGreen(String envName) {
         assert System.currentTimeMillis() < timeoutMillis :  "Application launch timeout"
 
         sleep(secToSleep * 1000)
-*/
     }
+}
+
+@NonCPS
+def parse(String json) {
+    new JsonSlurperClassic().parseText(json)
 }
 
 return this
