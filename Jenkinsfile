@@ -1,8 +1,8 @@
 #!/usr/bin/env groovy
 
 node {
-    sh "apt-get update"
-    sh "apt-get install python"
+    sh "apt-get update --user"
+    sh "apt-get install python --user"
 
     def deployUtils = load("${workspace}@script/scripts/DeploymentUtils.groovy")
 
