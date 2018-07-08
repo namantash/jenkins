@@ -50,7 +50,10 @@ void waitForGreen(String envName) {
     final timeoutMillis = System.currentTimeMillis() + (120 * 1000)
 
     while (true) {
-        final String responseStr = "sdfsfsdf"
+        final String responseStr = sh (
+                script: 'ls -lah',
+                returnStdout: true).trim()
+
         println "_____________________________________${responseStr}_____________________"
         
         break;
