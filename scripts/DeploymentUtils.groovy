@@ -48,7 +48,7 @@ void waitForGreen(String envName) {
 
     while (true) {
         final String responseStr = sh (
-                script: 'ls -lah',
+                script: "aws elasticbeanstalk describe-environments --application-name ${APPLICATION_NAME}",
                 returnStdout: true).trim()
 
         println "_____________________________________${responseStr}_____________________"
@@ -77,6 +77,13 @@ void waitForGreen(String envName) {
     }
 }
 
+/**
+ * Jenkins requires objects to be serializable -- workaround
+ * https://issues.apache.org/jira/browse/GROOVY-6934
+ *
+ * @param json
+ * @return
+ */
 @NonCPS
 def parse(String json) {
     new JsonSlurperClassic().parseText(json)
