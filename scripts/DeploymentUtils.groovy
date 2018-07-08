@@ -8,7 +8,7 @@ import org.jenkinsci.plugins.scriptsecurity.sandbox.whitelists.Whitelisted
 /**
  * should be same with .elasticbeanstalk/config.xml/application_name
  */
-APPLICATION_NAME = 'core-server'
+//APPLICATION_NAME = 'core-server'
 
 /**
  * Retrieves environment name by its cname using AWS ElasticBeanstalk CLI
@@ -19,7 +19,7 @@ APPLICATION_NAME = 'core-server'
 @Whitelisted
 static String getEnvironmentByCNAME(String cname) {
     final String responseStr = sh (
-            script: "aws elasticbeanstalk describe-environments --application-name ${APPLICATION_NAME}",
+            script: "aws elasticbeanstalk describe-environments --application-name core-server",
             returnStdout: true).trim()
 
     def response = parse(responseStr)
@@ -48,7 +48,7 @@ static void waitForGreen(String envName) {
 
     while (true) {
         final String responseStr = sh (
-                script: "aws elasticbeanstalk describe-environments --application-name ${APPLICATION_NAME}",
+                script: "aws elasticbeanstalk describe-environments --application-name core-server",
                 returnStdout: true).trim()
 
         def response = parse(responseStr)
