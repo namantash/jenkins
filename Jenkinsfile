@@ -7,7 +7,9 @@ node {
 
     def deployUtils = load("${workspace}@script/scripts/DeploymentUtils.groovy")
 
-    deployUtils.waitForGreen(awsResult)
+    deployUtils.test()
+    
+    //deployUtils.waitForGreen(awsResult)
 
-    println deployUtils.getEnvironmentByCNAME(awsResult)
+    //println deployUtils.getEnvironmentByCNAME(awsResult)
 }

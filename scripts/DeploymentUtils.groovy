@@ -11,17 +11,24 @@ APPLICATION_NAME = 'core-server'
 
 /**
  * Retrieves environment name by its cname using AWS ElasticBeanstalk CLI
- * @param cname environment cname                                          x
+ * @param cname environment cname
  * @return environment name
  */
 
+void test() {
+    def awsResult = sh (
+            script: 'ls -lah',
+            returnStdout: true).trim()
+    print awsResult;
+}
+
 String getEnvironmentByCNAME(String cname) {
     final def jsonSlurper = new JsonSlurper()
-    
 
-    println cname
-    
-/*
+    final String responseStr = "aws elasticbeanstalk describe-environments --application-name ${APPLICATION_NAME}".execute().text
+
+    def response = jsonSlurper.parseText(responseStr)
+
     Optional<String> envName = ((List<Map<String, Object>>)((Map) response).get("Environments")).stream()
             .filter({it.get("CNAME").toString().startsWith(cname + ".")})
             .map({it -> it.get("EnvironmentName").toString()})
@@ -30,10 +37,26 @@ String getEnvironmentByCNAME(String cname) {
     if (envName.isPresent()) {
         return envName.get();
     } else {
-        //assert false : "Environment not found"
+        assert false : "Environment not found"
     }
-*/
-    return null
+}
+
+
+boolean isEnvStatusGreen(String awsResponse, String envName) {
+    final def jsonSlurper = new JsonSlurper()
+
+    def response = jsonSlurper.parseText(awsResponse)
+
+    Optional<String> envHealth = ((List<Map<String, Object>>)((Map) response).get("Environments")).stream()
+            .filter({it.get("EnvironmentName").toString().equalsIgnoreCase(envName)})
+            .map({it -> it.get("Health").toString()})
+            .findAny()
+
+    if (envHealth.isPresent()) {
+        return (envHealth.get().equalsIgnoreCase("green"))
+    } else {
+        assert false : "Environment not found"
+    }
 }
 
 /**
@@ -41,10 +64,43 @@ String getEnvironmentByCNAME(String cname) {
  * @param envName environment name
  */
 
+
 void waitForGreen(String envName) {
     final def jsonSlurper = new JsonSlurper()
 
-    println envName
+    final int secToSleep = 10
+
+    final timeoutMillis = System.currentTimeMillis() + (120 * 1000)
+
+    while (true) {
+        final String responseStr = "aws elasticbeanstalk describe-environments --application-name ${APPLICATION_NAME}".execute().text
+
+        def response = jsonSlurper.parseText(responseStr)
+
+        Optional<String> envHealth = ((List<Map<String, Object>>)((Map) response).get("Environments")).stream()
+                .filter({it.get("EnvironmentName").toString().equalsIgnoreCase(envName)})
+                .map({it -> it.get("Health").toString()})
+                .findAny()
+
+        if (envHealth.isPresent()) {
+            if (envHealth.get().equalsIgnoreCase("green")) {
+                println "Environment is up and running"
+                return;
+            } else {
+                println "Current health color ${envHealth.get()} -- will check back in ${secToSleep} ..."
+            }
+        } else {
+            assert false : "Environment not found"
+        }
+
+        assert System.currentTimeMillis() < timeoutMillis :  "Application launch timeout"
+
+        sleep(secToSleep * 1000)
+    }
 }
+
+final String responseStr = "aws elasticbeanstalk describe-environments --application-name ${APPLICATION_NAME}".execute().text
+
+println "Env status: " + isEnvStatusGreen(responseStr, )
 
 return this
