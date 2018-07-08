@@ -1,9 +1,7 @@
 #!/usr/bin/env groovy
 
 node {
-    def instanceType = 't2.large'
+    def deployUtils = load('scripts/DeploymentUtils.groovy')
 
-    sh "eb create paktor-${env.BUILD_NUMBER} --instance_type ${instanceType} --instance_profile core-server --cname paktor-test-${env.BUILD_NUMBER}"
-
-    deployUtils.waitForGreen("paktor-${env.BUILD_NUMBER}")
+    deployUtils.waitForGreen("app-${env.BUILD_NUMBER}")
 }
