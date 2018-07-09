@@ -14,11 +14,11 @@
  */
 
 String getEnvironmentByCNAME(String cname) {
+    def response = readJSON text: '{}'
+
     final String responseStr = sh (
             script: "aws elasticbeanstalk describe-environments --application-name core-server",
             returnStdout: true).trim()
-
-    def response = readJSON text: responseStr
 
     Optional<String> envName = ((List<Map<String, Object>>)((Map) response).get("Environments")).stream()
             .filter({it.get("CNAME").toString().startsWith(cname + ".")})
@@ -38,6 +38,8 @@ String getEnvironmentByCNAME(String cname) {
  */
 
 void waitForGreen(String envName) {
+    def response = readJSON text: '{}'
+
     final int secToSleep = 10
 
     final timeoutMillis = System.currentTimeMillis() + (120 * 1000)
@@ -46,8 +48,6 @@ void waitForGreen(String envName) {
         final String responseStr = sh (
                 script: "aws elasticbeanstalk describe-environments --application-name core-server",
                 returnStdout: true).trim()
-
-        def response = readJSON text: responseStr
 
         Optional<String> envHealth = ((List<Map<String, Object>>)((Map) response).get("Environments")).stream()
                 .filter({it.get("EnvironmentName").toString().equalsIgnoreCase(envName)})
