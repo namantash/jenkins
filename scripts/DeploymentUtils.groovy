@@ -1,5 +1,4 @@
 import groovy.json.JsonSlurperClassic
-import jenkins.model.Jenkins
 /**
  * @author: Askhat Salikhov
  */
@@ -14,13 +13,6 @@ import jenkins.model.Jenkins
  * @param cname environment cname
  * @return environment name
  */
-
-void approveScript() {
-    def extension = Jenkins.instance
-            .getExtensionList(org.jenkinsci.plugins.scriptsecurity.scripts.ScriptApproval.class)[0];
-    extension.approveScript("scripts/DeploymentUtils.groovy")
-    extension.approveScript("scripts/DeploymentUtils")
-}
 
 String getEnvironmentByCNAME(String cname) {
     final String responseStr = sh (
