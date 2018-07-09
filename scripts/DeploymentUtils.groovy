@@ -1,4 +1,3 @@
-import groovy.json.JsonSlurperClassic
 /**
  * @author: Askhat Salikhov
  */
@@ -19,7 +18,7 @@ String getEnvironmentByCNAME(String cname) {
             script: "aws elasticbeanstalk describe-environments --application-name core-server",
             returnStdout: true).trim()
 
-    def response = parse(responseStr)
+    def response = readJSON text: responseStr
 
     Optional<String> envName = ((List<Map<String, Object>>)((Map) response).get("Environments")).stream()
             .filter({it.get("CNAME").toString().startsWith(cname + ".")})
@@ -48,7 +47,7 @@ void waitForGreen(String envName) {
                 script: "aws elasticbeanstalk describe-environments --application-name core-server",
                 returnStdout: true).trim()
 
-        def response = parse(responseStr)
+        def response = readJSON text: responseStr
 
         Optional<String> envHealth = ((List<Map<String, Object>>)((Map) response).get("Environments")).stream()
                 .filter({it.get("EnvironmentName").toString().equalsIgnoreCase(envName)})
@@ -70,18 +69,6 @@ void waitForGreen(String envName) {
 
         sleep(secToSleep * 1000)
     }
-}
-
-/**
- * Jenkins requires objects to be serializable -- workaround
- * https://issues.apache.org/jira/browse/GROOVY-6934
- *
- * @param json
- * @return
- */
-@NonCPS
-static def parse(String json) {
-    new JsonSlurperClassic().parseText(json)
 }
 
 return this
