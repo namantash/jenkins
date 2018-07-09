@@ -3,5 +3,9 @@
 node {
     def deployUtils = load("${workspace}@script/scripts/DeploymentUtils.groovy")
 
-    deployUtils.getEnvironmentByCNAME("sdfsfsdf")
+    def echo = sh(script:./test.sh, returnStdout: true)
+
+    println "this is from sh: ${echo}"
+
+    //deployUtils.getEnvironmentByCNAME("sdfsfsdf")
 }
